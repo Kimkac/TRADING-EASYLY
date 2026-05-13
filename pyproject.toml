@@ -1,0 +1,18 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "trading-bot"
+version = "0.1.0"
+description = "A trading bot for forex and stocks"
+authors = [{name = "Your Name"}]
+dependencies = [
+    "requests",
+    "pandas",
+    "numpy",
+    "yfinance"
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
