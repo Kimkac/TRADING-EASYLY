@@ -1,0 +1,91 @@
+name: Trading Bot Tests
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        python-version: ['3.9', '3.10', '3.11']
+
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+    
+    - name: Cache pip dependencies
+      uses: actions/cache@v3
+      with:
+        path: ~/.cache/pip
+        key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+        restore-keys: |
+          ${{ runner.os }}-pip-
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+    
+    - name: Lint with flake8
+      continue-on-error: true
+      run: |
+        pip install flake8
+        flake8 src/ --count --select=E9,F63,F7,F82 --show-source --statistics
+    
+    - name: Test imports
+      run: |
+        python -c "from trading_bot.config.settings import SYMBOL; print('Config OK')"
+        python -c "from trading_bot.strategies.ma_strategy import MovingAverageStrategy; print('MA Strategy OK')"
+        python -c "from trading_bot.strategies.advanced_strategies import RSIStrategy, MACDStrategy, BollingerBandsStrategy; print('Advanced Strategies OK')"
+        python -c "from trading_bot.data.data_fetcher import DataFetcher; print('Data Fetcher OK')"
+        python -c "from trading_bot.backtest.backtester import Backtester; print('Backtester OK')"
+        python -c "from trading_bot.platforms.alpaca_platform import AlpacaPlatform; print('Alpaca Platform OK')"
+    
+    - name: Run trading bot
+      run: |
+        python -m trading_bot.main > bot_output.log 2>&1 || true
+    
+    - name: Upload bot output
+      if: always()
+      uses: actions/upload-artifact@v3
+      with:
+        name: bot_output_${{ matrix.os }}_py${{ matrix.python-version }}
+        path: bot_output.log
+    
+    - name: Check logs
+      if: always()
+      run: |
+        ls -la logs/ 2>/dev/null || echo "No logs directory"
+
+  lint:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install pylint black
+    
+    - name: Check code format with black
+      continue-on-error: true
+      run: black --check src/
+    
+    - name: Lint with pylint
+      continue-on-error: true
+      run: pylint src/trading_bot/ --exit-zero

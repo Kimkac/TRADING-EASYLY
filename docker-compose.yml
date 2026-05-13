@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  trading-bot:
+    build: .
+    container_name: trading-bot
+    environment:
+      - API_KEY=${API_KEY}
+      - API_SECRET=${API_SECRET}
+      - SYMBOL=AAPL
+      - QUANTITY=100
+      - LOG_LEVEL=INFO
+    volumes:
+      - ./logs:/app/logs
+      - ./src:/app/src
+    ports:
+      - "8000:8000"
+    restart: unless-stopped
+    networks:
+      - trading-network
+
+  # Optional: PostgreSQL for storing trade history
+  postgres:
+    image: postgres:15-alpine
+    container_name: trading-bot-db
+    environment:
+      POSTGRES_USER: trading_bot
+      POSTGRES_PASSWORD: secure_password
+      POSTGRES_DB: trading_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: unless-stopped
+    networks:
+      - trading-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U trading_bot"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres_data:
+
+networks:
+  trading-network:
+    driver: bridge
