@@ -12,6 +12,7 @@ A comprehensive, production-ready trading bot for forex and stocks that can inte
 
 ### Platform Support
 - **Alpaca** - Full trading platform adapter with paper trading support
+- **Deriv** - Forex, indices, crypto, and options trading platform
 - **Generic REST API** - Extensible adapter for any REST-based trading platform
 - Custom platform integration via base class inheritance
 
@@ -141,6 +142,44 @@ results = backtester.run(prices, strategy_func)
 - **numpy** - Numerical computations
 - **yfinance** - Yahoo Finance data access
 
+## Platform-Specific Guides
+
+### Alpaca Trading
+- Stocks, ETFs, and forex
+- Paper trading for testing
+- See README for basic setup
+
+### Deriv Trading
+- Forex, indices, crypto, and options
+- Demo account support
+- **[DERIV_SETUP.md](DERIV_SETUP.md)** - Complete setup guide
+- **[DERIV_INTEGRATION.md](DERIV_INTEGRATION.md)** - Integration details
+- **[examples/deriv_quickstart.py](examples/deriv_quickstart.py)** - Working example
+- Run: `python test_deriv.py` to test connection
+
+### Custom Platforms
+- Extend `RestApiPlatform` for REST APIs
+- Implement custom adapters inheriting from `TradingPlatform`
+
+## Quick Start
+
+### Deriv Demo Trading
+```bash
+# 1. Set your API token
+$env:DERIV_API_TOKEN = "your_token_here"
+
+# 2. Test connection
+python test_deriv.py
+
+# 3. Run trading bot
+python examples/deriv_quickstart.py
+```
+
+### Main Bot
+```bash
+python -m trading_bot.main
+```
+
 ## Future Enhancements
 
 - Multi-asset portfolio management
@@ -149,6 +188,18 @@ results = backtester.run(prices, strategy_func)
 - Performance analytics dashboard
 - Machine learning strategy optimization
 - Options trading support
+- WebSocket real-time data
+- Advanced order types (limit, stop-loss)
+
+## Documentation
+
+- **[README.md](README.md)** - Main documentation
+- **[DERIV_SETUP.md](DERIV_SETUP.md)** - Deriv setup guide
+- **[DERIV_INTEGRATION.md](DERIV_INTEGRATION.md)** - Implementation details
+- **[DERIV_CHECKLIST.md](DERIV_CHECKLIST.md)** - Feature checklist
+- **[CONTRIBUTING.md](CONTRIBUTING.md)** - Contributing guidelines
+- **[INSTALLATION.md](INSTALL.md)** - Installation guide
+- **[DEPLOYMENT.md](DEPLOYMENT.md)** - Deployment options
 
 ## License
 
@@ -156,4 +207,10 @@ MIT License - feel free to use and modify
 
 ## Support
 
-For issues and feature requests, please check the project documentation or create an issue in the repository.
+For issues and feature requests:
+- Check platform-specific guides (DERIV_SETUP.md, etc.)
+- See [CONTRIBUTING.md](CONTRIBUTING.md) for contribution guidelines
+- Create an issue in the repository
+- Refer to platform documentation:
+  - [Alpaca Docs](https://alpaca.markets/docs/)
+  - [Deriv API Docs](https://api.deriv.com/)

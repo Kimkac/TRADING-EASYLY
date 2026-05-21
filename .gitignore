@@ -108,7 +108,24 @@ dmypy.json
 # IDE
 .vscode/
 .idea/
+*.swp
+*.swo
+*~
 
 # OS
 .DS_Store
 Thumbs.db
+
+# Trading Bot Specific
+logs/
+*.log
+config_local.py
+.alpaca_credentials
+trading_data.csv
+backtest_results/
+api_keys.json
+secrets.json
+*.key
+*.pem
+.env.local
+.env.*.local

@@ -10,6 +10,22 @@ class DataFetcher:
     """Fetch market data from various sources"""
     
     @staticmethod
+    def fetch_data(symbol: str, days: int = 100, interval: str = "1d") -> pd.DataFrame:
+        """Fetch market data (main method used by trading bot)"""
+        try:
+            end_date = datetime.now()
+            start_date = end_date - timedelta(days=days)
+            return DataFetcher.fetch_yfinance_data(
+                symbol, 
+                start_date=start_date.strftime('%Y-%m-%d'),
+                end_date=end_date.strftime('%Y-%m-%d'),
+                interval=interval
+            )
+        except Exception as e:
+            logger.error(f"Failed to fetch data for {symbol}: {str(e)}")
+            return pd.DataFrame()
+
+    @staticmethod
     def fetch_yfinance_data(symbol: str, start_date: Optional[str] = None, end_date: Optional[str] = None, interval: str = "1d") -> pd.DataFrame:
         """Fetch data from Yahoo Finance"""
         try:

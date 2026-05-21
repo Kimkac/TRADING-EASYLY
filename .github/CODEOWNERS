@@ -1,0 +1,17 @@
+# This file defines code owners for the repository
+# See documentation: https://help.github.com/articles/about-codeowners/
+
+# Default owner for everything in the repo
+* @YOUR_USERNAME
+
+# Trading strategies
+/src/trading_bot/strategies/ @YOUR_USERNAME
+
+# Platform adapters
+/src/trading_bot/platforms/ @YOUR_USERNAME
+
+# Backtesting engine
+/src/trading_bot/backtest/ @YOUR_USERNAME
+
+# CI/CD and workflows
+/.github/ @YOUR_USERNAME
