@@ -47,11 +47,13 @@ class MpesaPaymentProcessor:
         self.auth_url = "https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials"
         self.stk_url = "https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest"
         self.callback_url = "https://sandbox.safaricom.co.ke/mpesa/c2b/v1/simulate"
+        self.query_url = "https://sandbox.safaricom.co.ke/mpesa/stkpushquery/v1/query"
         
         if environment == "production":
             self.auth_url = "https://api.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials"
             self.stk_url = "https://api.safaricom.co.ke/mpesa/stkpush/v1/processrequest"
             self.callback_url = "https://api.safaricom.co.ke/mpesa/c2b/v1/simulate"
+            self.query_url = "https://api.safaricom.co.ke/mpesa/stkpushquery/v1/query"
         
         self.access_token = None
         self.token_expiry = None
@@ -125,7 +127,7 @@ class MpesaPaymentProcessor:
                 "PartyA": phone_number,
                 "PartyB": self.business_shortcode,
                 "PhoneNumber": phone_number,
-                "CallBackURL": "https://yourwebsite.com/api/mpesa_callback",
+                "CallBackURL": self.callback_url,
                 "AccountReference": account_reference,
                 "TransactionDesc": transaction_desc
             }
@@ -175,8 +177,6 @@ class MpesaPaymentProcessor:
                 "Content-Type": "application/json"
             }
             
-            query_url = self.stk_url.replace("processrequest", "query")
-            
             payload = {
                 "BusinessShortCode": self.business_shortcode,
                 "Password": password,
@@ -185,7 +185,7 @@ class MpesaPaymentProcessor:
             }
             
             response = requests.post(
-                query_url,
+                self.query_url,
                 json=payload,
                 headers=headers,
                 timeout=10
