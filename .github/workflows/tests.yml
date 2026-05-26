@@ -43,12 +43,12 @@ jobs:
     
     - name: Test imports
       run: |
-        python -c "from trading_bot.config.settings import SYMBOL; print('Config OK')"
-        python -c "from trading_bot.strategies.ma_strategy import MovingAverageStrategy; print('MA Strategy OK')"
-        python -c "from trading_bot.strategies.advanced_strategies import RSIStrategy, MACDStrategy, BollingerBandsStrategy; print('Advanced Strategies OK')"
-        python -c "from trading_bot.data.data_fetcher import DataFetcher; print('Data Fetcher OK')"
-        python -c "from trading_bot.backtest.backtester import Backtester; print('Backtester OK')"
-        python -c "from trading_bot.platforms.alpaca_platform import AlpacaPlatform; print('Alpaca Platform OK')"
+        python -c "from src.trading_bot.config.settings import SYMBOL; print('Config OK')"
+        python -c "from src.trading_bot.strategies.ma_strategy import MovingAverageStrategy; print('MA Strategy OK')"
+        python -c "from src.trading_bot.strategies.advanced_strategies import RSIStrategy, MACDStrategy, BollingerBandsStrategy; print('Advanced Strategies OK')"
+        python -c "from src.trading_bot.data.data_fetcher import DataFetcher; print('Data Fetcher OK')"
+        python -c "from src.trading_bot.backtest.backtester import Backtester; print('Backtester OK')"
+        python -c "from src.trading_bot.platforms.alpaca_platform import AlpacaPlatform; print('Alpaca Platform OK')"
     
     - name: Run trading bot
       run: |
