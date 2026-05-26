@@ -2,3 +2,7 @@ requests
 pandas
 numpy
 yfinance
+flask
+werkzeug
+gunicorn
+python-dotenv
